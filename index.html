@@ -782,7 +782,6 @@
         var h='<div class="pricing-block-title"><span class="accent-rule"></span>&nbsp;'+u.lApply+'</div>'
         + '<div class="form-grid">';
         DATA.apply.forEach(function(q,i){
-            console.log(q);
             var prev=document.getElementById('aq_'+i); var val=prev?prev.value:'';
             h+='<div class="form-item"><div class="form-label">'+q[lang]+'</div>';
             if(q.type==='textarea') {
