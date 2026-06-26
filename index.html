@@ -162,7 +162,8 @@
         /* ── PORTFOLIO ── */
         .port-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;}
         .port-item{
-            aspect-ratio:3.27/4;background:var(--bg2);
+            aspect-ratio:3.27/4;
+            background:var(--bg2);
             border:1px solid var(--line);
             overflow:hidden;position:relative;cursor:pointer;
             transition:border-color .2s, transform .2s;
@@ -175,7 +176,18 @@
         }
         .port-item:hover .port-overlay{opacity:1;}
 
-
+        /* ── RIGGING ── */
+        .rigg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;}
+        .rigg-item{
+            aspect-ratio:2.8/4;
+            background:#ffffff;
+            border:1px solid var(--line);
+            overflow:hidden;position:relative;cursor:pointer;
+            transition:border-color .2s, transform .2s;
+        }
+        .rigg-item:hover{border-color:var(--ink);transform:translateY(-2px);}
+        .rigg-item video{width:100%;height:100%;display:block;filter:saturate(.82) contrast(1.02);}
+        .rigg-item:hover .port-overlay{opacity:1;}
 
         .cap{position:absolute;left:12px;right:12px;bottom:10px;color:var(--bg);font-size:10px;letter-spacing:.14em;text-transform:uppercase;text-shadow:0 1px 12px rgba(0,0,0,.6);}
         .port-loading,.port-empty{text-align:center;padding:34px;color:var(--ink3);font-size:13px;font-weight:600}
@@ -445,6 +457,19 @@
     </div>
 </section>
 
+<section class="section" id="rigging">
+    <div class="section-head">
+        <div class="section-eyebrow">Works</div>
+        <div class="section-title sec-title" id="rigg"></div>
+    </div>
+
+    <div class="port-loading" id="riggLoading"></div>
+    <div class="port-empty" id="riggEmpty" style="display:none"></div>
+    <div class="rigg-wrap" id="riggWrap">
+        <div class="rigg-grid" id="riggGrid"></div>
+    </div>
+</section>
+
 <!-- STEPS -->
 <section class="section">
     <div class="section-head">
@@ -518,6 +543,7 @@
             ctaPrice:'가격 계산하기', ctaPort:'포트폴리오 보기',
             tSlots:'작업 슬롯 현황', bSlots:'실시간',
             tPort:'포트폴리오', bPort:'갤러리',
+            tRigging:'리깅',
             tWork:'작업 순서',
             tPrice:'가격 계산 & 신청서', bPrice:'간편',
             tNotice:'작업 안내 & 약관',
@@ -537,6 +563,7 @@
             ctaPrice:'Price Calculator', ctaPort:'View Portfolio',
             tSlots:'Slot Availability', bSlots:'Live',
             tPort:'Portfolio', bPort:'Gallery',
+            tRigging:'Rigging',
             tWork:'Work Process',
             tPrice:'Price & Order Form', bPrice:'Easy',
             tNotice:'Terms & Info',
@@ -653,7 +680,7 @@
             {ko:'파일 수령 이메일', en:'Email for file delivery', type:'email'}
         ]
     };
-    var GH={user:'hmyu-dev',repo:'ODE',folder:'portfolio'};
+    var GH={user:'hmyu-dev',repo:'ODE',folder:'portfolio',rigging:'rigging'};
 
 
     function toggleAccord(h){
@@ -690,12 +717,13 @@
         document.getElementById('heroSub').innerHTML=DATA.hero?(lang==='ko'?DATA.hero.subKo:DATA.hero.subEn):u.heroSub;
         document.getElementById('ctaPrice').textContent=u.ctaPrice;
         document.getElementById('ctaPort').textContent=u.ctaPort;
-        set('slot',u.tSlots);set('port',u.tPort)
+        set('slot',u.tSlots);set('port',u.tPort);set('rigg',u.tRigging);
         set('process',u.tWork);set('priceOrder',u.tPrice);set('b-price',u.bPrice);set('notice',u.tNotice);
         set('l-preview',u.lPreview);set('l-total',u.lTotal);set('t-won',u.won);
         set('btnCopy',u.copy);set('btnReset',u.reset);set('foot',u.foot);
         set('lbPrev',u.lbPrev);set('lbNext',u.lbNext);
         document.getElementById('portLoading').textContent=u.portLoad;
+        document.getElementById('riggLoading').textContent=u.portLoad;
     }
     function set(id,t){var e=document.getElementById(id);if(e)e.textContent=t;}
 
@@ -844,6 +872,28 @@
     function closeLb(){document.getElementById('portViewer').classList.remove('open');}
     function lbNav(d){openLb(lbIdx+d);}
 
+    /* ════════ rigging ════════ */
+    var videos = [];
+
+    function loadRigging() {
+        fetch('https://api.github.com/repos/' + GH.user + '/' + GH.repo + '/contents/' + GH.rigging)
+            .then(function (r) {
+                if (!r.ok) throw new Error(r.status);
+                return r.json();
+            })
+            .then(function (data) {
+                videos = [];
+                (data || []).forEach(function(f){if(f.type==='file'&&/\.(mp4)$/i.test(f.name)){videos.push({src:f.download_url,cap:f.name.replace(/\.[^.]+$/,'')});}});
+                document.getElementById('riggLoading').style.display='none';
+                if(!videos.length){var e=document.getElementById('riggEmpty');e.style.display='block';e.textContent=UI[lang].portEmpty;return;}
+                var g='';
+                videos = videos.reverse();
+                videos.forEach(function(im){g+='<div class="rigg-item"><video loading="lazy" src="'+im.src+'" alt="'+im.cap+'" controls width="300" height="200"></video></div>';});
+                document.getElementById('riggGrid').innerHTML=g;document.getElementById('riggWrap').style.display='block';
+            })
+            .catch(function(){document.getElementById('riggLoading').style.display='none';var e=document.getElementById('riggEmpty');e.style.display='block';e.textContent=UI[lang].portErr;});
+    }
+
     /* ════════ selection ════════ */
     function findItem(secId,itId){var s=DATA.sections.find(function(x){return x.id===secId;});return s.items.find(function(i){return i.id===itId;});}
     function pickRadio(secId,itId){
@@ -985,7 +1035,7 @@
             .then(function(r){return r.ok?r.json():null;})
             .then(function(j){applyData(j);})
             .catch(function(){})
-            .then(function(){ setLang('ko'); loadPortfolio(); });
+            .then(function(){ setLang('ko'); loadPortfolio(); loadRigging();});
     }
     init();
     document.addEventListener('keydown',function(e){if(e.key==='Escape')closeLb();});
