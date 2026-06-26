@@ -331,9 +331,7 @@
         .accord-content{padding:22px 24px;font-size:13px;color:var(--ink60);line-height:2;white-space:pre-line;}
 
         /* toast */
-        /*.toast{position:fixed;bottom:54px;left:50%;transform:translateX(-50%) translateY(20px);z-index:9000;background:var(--ink);color:#fff;padding:12px 22px;border-radius:var(--r-sm);font-size:13px;font-weight:800;opacity:0;pointer-events:none;transition:all .3s;}*/
-        .toast{position:fixed;top:200px;left:50%;z-index:9000;background:var(--ink);color:#fff;padding:12px 22px;border-radius:var(--r-sm);font-size:13px;font-weight:800;opacity:0;pointer-events:none;transition:all .3s;}
-        /*.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}*/
+        .toast{width:350px;margin-top:10px;background:var(--ink);color:#fff;padding:12px 22px;border-radius:var(--r-sm);font-size:13px;font-weight:800;opacity:0;pointer-events:none;transition:all .3s;}
         .toast.show{opacity:1;}
 
         /* section heading */
@@ -495,8 +493,6 @@
     </div>
     <div class="accord-list" id="accordList"></div>
 </section>
-
-<div class="toast" id="toast"></div>
 
 <!-- lightbox -->
 <div class="lb" id="lb">
@@ -770,7 +766,8 @@
                     var price=sec.type==='expr'?'':' <span class="pp">+'+won(it.p)+'</span>';
                     h+='<span class="expr-tag'+(on?' active':'')+'" id="pl-'+it.id+'" onclick="togglePill(\''+sec.id+'\',\''+it.id+'\')">'+it[lang]+price+'</span>';
                 });
-                h+='</div>';
+                h+='</div>' +
+                    '<div class="toast" id="toast"></div>';
             }
             var hint=lang==='ko'?sec.hintKo:sec.hintEn; if(hint)h+='<div class="hint">'+hint+'</div>';
             h+='</div></div>';
@@ -888,7 +885,7 @@
         sel={};
         renderForm(); // 라디오/필/수량 전부 초기 상태로 다시 그림
         DATA.apply.forEach(function(q,i){var e=document.getElementById('aq_'+i);if(e)e.value='';});
-        rebuild();toast(UI[lang].resetDone);
+        rebuild();
     }
 
     /* ════════ build form text (DASHBOARD-COMPATIBLE, always Korean structure) ════════ */
@@ -953,9 +950,9 @@
     }
     function copyForm(){
         var r=buildFormText();
-        if(!r.any){toast(UI[lang].needSel);return;}
-        navigator.clipboard.writeText(r.text).then(function(){toast(UI[lang].copyDone);}).catch(function(){
-            var ta=document.createElement('textarea');ta.value=r.text;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();toast(UI[lang].copyDone);
+        if(!r.any){return;}
+        navigator.clipboard.writeText(r.text).then(function(){}).catch(function(){
+            var ta=document.createElement('textarea');ta.value=r.text;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();
         });
     }
 
@@ -964,7 +961,6 @@
     function toast(msg){
         var el=document.getElementById('toast');
         el.textContent=msg;
-        el.style.top = `${window.parent.scrollY + window.parent.innerHeight - 80}px`;
         el.classList.add('show');
         clearTimeout(toastT);
         toastT=setTimeout(function(){el.classList.remove('show');},2200);
