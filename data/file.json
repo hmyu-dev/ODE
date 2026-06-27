@@ -1,5 +1,19 @@
 {
   "updated": "2026-06-27T08:37:56.942Z",
+  "categories": [
+    {
+      "id":"portfolio",
+      "name":"포트폴리오",
+      "sub":"Live2D 일러스트",
+      "num":"01"
+    },
+    {
+      "id":"rigging",
+      "name":"리깅",
+      "sub":"리깅 영상",
+      "num":"02"
+    }
+  ],
   "portfolio": [
     {
       "file": "LILLET_BLANC.jpeg",
