@@ -319,10 +319,12 @@
     // }
 
     function buildJson(){
+        D.portfolio = D.portfolio.filter(item => item.sha !== '');
         D.portfolio.forEach(item => {
             delete item.content;
             delete item.uuid;
         });
+        D.rigging = D.rigging.filter(item => item.sha !== '');
         D.rigging.forEach(item => {
             delete item.content;
             delete item.uuid;
@@ -352,8 +354,6 @@
                         D.rigging.find(item => item.file === f.name).sha=data.content.sha;
                     }
                 }).catch(function(e){
-                    console.log(e);
-                    console.log(f);
                     if (f.id==='portfolio') {
                         D.portfolio = D.portfolio.filter(item => item.file !== f.name);
                     } else {
