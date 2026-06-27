@@ -1,15 +1,30 @@
 {
-  "updated": "2026-06-27T07:00:43.985Z",
+  "updated": "2026-06-27T07:13:23.786Z",
   "portfolio": [
     {
       "file": "LILLET_BLANC.jpeg",
       "title": "LILLET_BLANC",
-      "title_en": "",
-      "tag": "Live2D"
+      "title_en": "4fc96589028471d221a70f8a2033fc17ffc5323b",
+      "tag": "Live2D",
+      "sha": ""
     },
     {
       "file": "ABSINTHE.jpeg",
       "title": "ABSINTHE",
+      "title_en": "",
+      "tag": "Live2D",
+      "sha": "19bfdccaad775db496243843576b785364f7e10b"
+    },
+    {
+      "file": "logo.png",
+      "title": "logo",
+      "title_en": "",
+      "tag": "Live2D",
+      "sha": "7f806d1ec3816c9c079ff2f9d2da33dbd3d6013a"
+    },
+    {
+      "file": "profile2.png",
+      "title": "profile2",
       "title_en": "",
       "tag": "Live2D"
     }
@@ -19,13 +34,15 @@
       "file": "face.mp4",
       "title": "얼굴",
       "title_en": "",
-      "tag": "Rigging"
+      "tag": "Rigging",
+      "sha": "ab0cfb7a8318c6c5948430eb7c1ee5ff48016652"
     },
     {
       "file": "body.mp4",
       "title": "전신",
       "title_en": "",
-      "tag": "Rigging"
+      "tag": "Rigging",
+      "sha": "62c6488660c8bbcc32924e21266f302b1f1ee3ac"
     }
   ]
 }
