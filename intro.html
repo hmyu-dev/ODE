@@ -1,0 +1,105 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <link rel="stylesheet" href="css/style.css">
+    <meta name="description" content="">
+
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <meta property="og:image:alt" content="">
+
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="icon.png">
+
+    <link rel="manifest" href="site.webmanifest">
+    <meta name="theme-color" content="#fafafa">
+</head>
+
+<body>
+
+<div class="detailinfo">
+    <div class="showcontent">
+        <div id="odeSide" style="display: block; position: fixed; top: 120px; left: 18px; z-index: 9999; width: 188px; box-sizing: border-box; background: rgb(255, 255, 255); border: 1px solid rgb(227, 232, 239); border-radius: 10px; box-shadow: rgba(40, 80, 130, 0.12) 0px 6px 24px; padding: 13px 14px;">
+            &nbsp;
+            <div style="font-size:10px;font-weight:800;color:#9aa5b1;">현재 합계</div>&nbsp;
+            <div id="odeTotal" style="font-size:18px;font-weight:900;color:#000000;margin:2px 0 9px;">0원</div>&nbsp;
+            <div id="odeNav" style="display:flex;flex-direction:column;gap:1px;border-top:1px solid #eef2f7;padding-top:7px;">
+                <div style="font-size: 11.5px; font-weight: 700; color: rgb(90, 101, 115); padding: 6px 7px; border-radius: 6px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    작업 슬롯 현황
+                </div>
+                <div style="font-size: 11.5px; font-weight: 700; color: rgb(90, 101, 115); padding: 6px 7px; border-radius: 6px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    포트폴리오
+                </div>
+                <div style="font-size: 11.5px; font-weight: 700; color: rgb(90, 101, 115); padding: 6px 7px; border-radius: 6px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    작업 순서
+                </div>
+                <div style="font-size: 11.5px; font-weight: 700; color: rgb(90, 101, 115); padding: 6px 7px; border-radius: 6px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    가격 계산 &amp; 신청서
+                </div>
+                <div style="font-size: 11.5px; font-weight: 700; color: rgb(90, 101, 115); padding: 6px 7px; border-radius: 6px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    작업 안내 &amp; 약관
+                </div>
+            </div>
+        </div>
+        <iframe id="odeFrame" src="https://hmyu-dev.github.io/ODE/"  =""
+                style="width: 100%; height: 6300px; border-width: medium; border-style: none; border-color: currentcolor; border-image: initial; display: block; margin: 0px auto;"
+                title="커미션 및 작업 안내"></iframe>
+        <script>(function () {
+            var f = document.getElementById('odeFrame');
+            var side = document.getElementById('odeSide');
+            var sections = [];
+
+            function renderNav() {
+                var nav = document.getElementById('odeNav');
+                if (!nav) return;
+                nav.innerHTML = '';
+                sections.forEach(function (s) {
+                    var b = document.createElement('div');
+                    b.textContent = s.label;
+                    b.style.cssText = 'font-size:11.5px;font-weight:700;color:#5a6573;padding:6px 7px;border-radius:6px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;';
+                    b.onmouseenter = function () {
+                        b.style.background = '#eef5fc';
+                    };
+                    b.onmouseleave = function () {
+                        b.style.background = '';
+                    };
+                    b.onclick = function () {
+                        if (!f) return;
+                        var off = f.getBoundingClientRect().top + (window.pageYOffset || document.documentElement.scrollTop || 0);
+                        window.scrollTo({top: off + s.y - 16, behavior: 'smooth'});
+                    };
+                    nav.appendChild(b);
+                });
+            }
+
+            window.addEventListener('message', function (e) {
+                var d = e.data;
+                if (!d || d.src !== 'ode-artmug' || !f) return;
+                if (d.mmHeight) {
+                    f.style.height = (d.mmHeight + 24) + 'px';
+                }
+                if (typeof d.total === 'number') {
+                    var t = document.getElementById('odeTotal');
+                    if (t) t.textContent = d.total.toLocaleString() + '원';
+                    if (side && window.innerWidth > 980) side.style.display = 'block';
+                }
+                if (Array.isArray(d.sections)) {
+                    sections = d.sections;
+                    renderNav();
+                }
+            });
+        })();</script>
+    </div>
+</div>
+<script src="js/app.js"></script>
+
+</body>
+
+</html>

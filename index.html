@@ -27,11 +27,6 @@
             --sh-md: 0 22px 70px rgba(15,15,13,0.08);
             --ink2: rgba(15,15,13,0.72);
             --ink3: rgba(15,15,13,0.45);
-            --sky: var(--ink);
-            --sky-d: var(--ink);
-            --sky-l: var(--line2);
-            --sky-pl: var(--bg2);
-            --sky-bg: var(--bg);
             --serif:   'Cormorant Garamond',serif;
             --sans:    'Noto Sans KR',sans-serif;
         }
@@ -855,7 +850,6 @@
                 document.getElementById('portLoading').style.display='none';
                 if(!imgs.length){var e=document.getElementById('portEmpty');e.style.display='block';e.textContent=UI[lang].portEmpty;return;}
                 var g='';
-                imgs = imgs.reverse();
                 imgs.forEach(function(im,i){g+='<div class="port-item" onclick="openLb('+i+')"><div class="port-placeholder"><img loading="lazy" src="'+im.src+'" alt="'+im.cap+'"></div><div class="cap">'+im.cap+'</div></div>';});
                 document.getElementById('portGrid').innerHTML=g;document.getElementById('portWrap').style.display='block';
             })
@@ -888,7 +882,6 @@
                 document.getElementById('riggLoading').style.display='none';
                 if(!videos.length){var e=document.getElementById('riggEmpty');e.style.display='block';e.textContent=UI[lang].portEmpty;return;}
                 var g='';
-                videos = videos.reverse();
                 videos.forEach(function(im){g+='<div class="rigg-item"><video loading="lazy" src="'+im.src+'" alt="'+im.cap+'" controls width="300" height="200"></video></div>';});
                 document.getElementById('riggGrid').innerHTML=g;document.getElementById('riggWrap').style.display='block';
             })
