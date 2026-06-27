@@ -150,14 +150,7 @@
         var c=ghCfg();
         return fetch('https://api.github.com/repos/'+c.user+'/'+c.repo+'/contents/'+catId)
             .then(function(r){return r.ok?r.json():[];})
-            .then(function(data){
-                folderFiles[catId]=(Array.isArray(data)?data:[])
-                    .filter(function(f){return f.type==='file'&&/\.(png|jpe?g|gif|webp|mp4)$/i.test(f.name);})
-                    .map(({ name, sha }) => ({ name, sha }));
-                    // .map(function(f){return f.name;});
-                console.log('data :' + data);
-                console.log('folderFiles :' + folderFiles[catId])
-            })
+            .then(function(data){folderFiles[catId]=(Array.isArray(data)?data:[]).filter(function(f){return f.type==='file'&&/\.(png|jpe?g|gif|webp|mp4)$/i.test(f.name);}).map(function(f){return f.name;});})
             .catch(function(){folderFiles[catId]=[];});
     }
 
@@ -188,26 +181,20 @@
         if(!curCat){g.innerHTML='<div class="empty">폴더를 선택하거나 만들어주세요</div>';return;}
         var items=D[curCat]||[];
         var inData={}; items.forEach(function(it){inData[it.file]=1;});
-        // var orphan=(folderFiles[curCat]||[]).filter(function(f){return !inData[f];});
-        var orphan = (folderFiles[curCat] || []).filter(function(f) {
-            return !inData[f.name];
-        });
-
+        var orphan=(folderFiles[curCat]||[]).filter(function(f){return !inData[f];});
         var h='';
         if(orphan.length){h+='<div class="empty" style="padding:13px"><b style="color:var(--amber)">폴더에 '+orphan.length+'개 파일이 더 있어요</b> (목록에 없음) <button class="syncbtn" onclick="syncOrphans()">↓ 목록에 추가</button></div>';}
         if(!items.length&&!orphan.length){g.innerHTML='<div class="empty">이미지가 없어요. 위에 끌어다 놓아 추가하세요 📂</div>';return;}
         items.forEach(function(it,i){
-            // var exists=(folderFiles[curCat]||[]).indexOf(it.file)>=0;
-            const exists = (folderFiles[curCat] || []).some(f => f.name === it.file);
-
+            var exists=(folderFiles[curCat]||[]).indexOf(it.file)>=0;
             h+='<div class="pcard'+(exists?'':' missing')+'" draggable="true" data-i="'+i+'">';
             if (curCat==='portfolio'&&exists) {
                 h+='<div class="pcard-imgwrap"><img src="'+base(curCat)+encodeURIComponent(it.file)+'" loading="lazy" alt="">';
-            } else if (curCat==='portfolio'&&!exists) {
+            } else if (curCat==='portfolio'&&!exists&&it.content) {
                 h+='<div class="pcard-imgwrap"><img src="'+URL.createObjectURL(it.content)+'" loading="lazy" alt="">';
             } else if (curCat==='rigging'&&exists) {
                 h+='<div class="pcard-videowrap"><video src="'+base(curCat)+encodeURIComponent(it.file)+'" controls loading="lazy" alt="">';
-            } else if (curCat==='rigging'&&!exists) {
+            } else if (curCat==='rigging'&&!exists&&it.content) {
                 h+='<div class="pcard-videowrap"><video src="'+URL.createObjectURL(it.content)+'" controls loading="lazy" alt="">';
             }
             h+='<div class="pcard-num">'+(i+1)+'</div>'+
@@ -236,7 +223,7 @@
     function mv(i,d){var j=i+d;if(j<0||j>=D[curCat].length)return;var t=D[curCat][i];D[curCat][i]=D[curCat][j];D[curCat][j]=t;setDirty(true);renderItems();}
     function syncOrphans(){
         var inData={}; (D[curCat]||[]).forEach(function(it){inData[it.file]=1;});
-        (folderFiles[curCat]||[]).forEach(function(f){console.log(f); if(!inData[f]){D[curCat].push({file:f,title:f.replace(/\.[^.]+$/,''),title_en:'',tag:'',sha:f.sha});}});
+        (folderFiles[curCat]||[]).forEach(function(f){console.log(f); if(!inData[f]){D[curCat].push({file:f,title:f.replace(/\.[^.]+$/,''),title_en:'',tag:''});}});
         setDirty(true);renderItems();toast('폴더 파일을 목록에 추가했어요 (저장 필요)','ok');
     }
 
@@ -270,10 +257,10 @@
                 var content=rd.result.split(',')[1];
                 var name=file.name.replace(/[^\w.\-가-힣]/g,'_');
                 let uuid = self.crypto.randomUUID();
-                addFileList.push({id:curCat, name:name, content:content, uuid:uuid});
+                addFileList.push({id:curCat, name:name, content:content, uuid:uuid, sha:''});
 
                 // if(!(folderFiles[curCat]||[]).includes(name)){(folderFiles[curCat]=folderFiles[curCat]||[]).push(name);}
-                if(!(D[curCat]||[]).some(function(it){return it.file===name;})){D[curCat].push({file:name,title:name.replace(/\.[^.]+$/,''),title_en:'',tag:curCat==='portfolio'?'Live2D':'Rigging',content:file,uuid:uuid});}
+                if(!(D[curCat]||[]).some(function(it){return it.file===name;})){D[curCat].push({file:name,title:name.replace(/\.[^.]+$/,''),title_en:'',tag:curCat==='portfolio'?'Live2D':'Rigging',content:file,uuid:uuid,sha:''});}
                 setDirty(true);
 
                 done++;fill.style.width=Math.round(done/imgs.length*100)+'%';
@@ -353,15 +340,25 @@
         if (addFileList) {
             addFileList.forEach(function (f) {
                 fetch('https://api.github.com/repos/'+c.user+'/'+c.repo+'/contents/'+f.id+'/'+encodeURIComponent(f.name),{
-                    method:'POST',headers:{'Authorization':'token '+c.token,'Content-Type':'application/json'},
+                    method:'PUT',headers:{'Authorization':'token '+c.token,'Content-Type':'application/json'},
                     body:JSON.stringify({message:'📷 파일 추가 ' + f.id+'/' + f.name,content:f.content})
-                }).then(function(r){
-                    const data = r.json();
-                    alert(data);
-                    if(r.ok){
-                        //
+                })
+                .then((r) => { return r.json() })
+                .then(data => {
+                    if(!(D[curCat]||[]).some(function(it){return it.file===f.name;})){D[curCat].push({file:f.name,title:f.name.replace(/\.[^.]+$/,''),title_en:'',tag:curCat==='portfolio'?'Live2D':'Rigging',sha:data.content.sha});}
+                    if (f.id==='portfolio') {
+                        D.portfolio.find(item => item.file === f.name).sha = data.content.sha;
+                    } else {
+                        D.rigging.find(item => item.file === f.name).sha=data.content.sha;
                     }
-                }).catch(function(){
+                }).catch(function(e){
+                    console.log(e);
+                    console.log(f);
+                    if (f.id==='portfolio') {
+                        D.portfolio = D.portfolio.filter(item => item.file !== f.name);
+                    } else {
+                        D.rigging = D.rigging.filter(item => item.file !== f.name);
+                    }
                     toast('파일 업로드 중 오류가 발생했습니다.','err');
                     setTimeout(function(){prog.classList.remove('show');renderItems();},900);
                 });
@@ -373,13 +370,11 @@
                 console.log(f);
                 fetch('https://api.github.com/repos/'+c.user+'/'+c.repo+'/contents/'+f.id+'/'+encodeURIComponent(f.name),{
                     method:'DELETE',headers:{'Authorization':'token '+c.token,'Content-Type':'application/json'},
-                    body:JSON.stringify({message:'📷 파일 삭제 '+ f.id+'/' + f.name, sha:f.sha})
-                }).then(function(r){
-                    alert(r);
-                    if(r.ok){
-                        //
-                    }
-                }).catch(function(){
+                    body:JSON.stringify({message:'📷 파일 삭제 '+ f.id+'/' + f.name, sha:f.sha})})
+                .then((r) => { return r.json() })
+                .then(data => {
+                    console.log(JSON.stringify(data, null, 2));
+                }).catch(function(e){
                     toast('파일 삭제 중 오류가 발생했습니다.','err');
                     setTimeout(function(){prog.classList.remove('show');renderItems();},900);
                 });
@@ -396,7 +391,7 @@
             .then(function(r){return r.json().then(function(j){return {ok:r.ok,j:j};});})
             .then(function(res){if(res.ok){setDirty(false);status('저장됨 ✓','ok');toast('저장 완료! 프로필 사이트에 반영돼요 🎉','ok');}else{status('실패','err');toast('저장 실패: '+(res.j.message||''),'err');}})
             .catch(function(e){status('오류','err');toast('오류: '+e.message,'err');})
-            // .then(function () {window.location.reload()});
+            .then(function () {window.location.reload()});
     }
     window.addEventListener('beforeunload',function(e){if(dirty){e.preventDefault();e.returnValue='';}});
     loadAll();
