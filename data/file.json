@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-27T07:13:23.786Z",
+  "updated": "2026-06-27T07:33:57.160Z",
   "portfolio": [
     {
       "file": "LILLET_BLANC.jpeg",
@@ -14,13 +14,6 @@
       "title_en": "",
       "tag": "Live2D",
       "sha": "19bfdccaad775db496243843576b785364f7e10b"
-    },
-    {
-      "file": "logo.png",
-      "title": "logo",
-      "title_en": "",
-      "tag": "Live2D",
-      "sha": "7f806d1ec3816c9c079ff2f9d2da33dbd3d6013a"
     }
   ],
   "rigging": [
@@ -40,4 +33,3 @@
     }
   ]
 }
-
