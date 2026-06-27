@@ -1,57 +1,11 @@
 {
-  "updated": "2026-06-16T10:11:10.751Z",
+  "updated": "2026-06-27T02:55:49.567Z",
   "hero": {
     "badgeKo": "Live2D Illustrator · ODE",
     "badgeEn": "Live2D Illustrator · ODE",
     "subKo": "퀄리티 높고 가성비 있는 그림을 지향합니다.<br>편하게 문의주세요.",
     "subEn": "Quality artwork at a fair price.<br>Feel free to reach out."
   },
-  "tags": [
-    {
-      "ko": "접수 <b>진행중</b>",
-      "en": "<b>Open</b> for requests",
-      "live": true,
-      "pk": true
-    },
-    {
-      "ko": "Live2D <b>전문</b>",
-      "en": "Live2D <b>specialist</b>",
-      "pk": true
-    },
-    {
-      "ko": "작업기간 <b>30일</b>",
-      "en": "<b>~30 day</b> turnaround"
-    }
-  ],
-  "slots": [
-    {
-      "ko": "6,7월",
-      "en": "July",
-      "filled": [
-        true,
-        true,
-        true,
-        false
-      ]
-    },
-    {
-      "ko": "8월",
-      "en": "August",
-      "filled": [
-        true,
-        true,
-        true
-      ]
-    },
-    {
-      "ko": "9월",
-      "en": "September",
-      "filled": [
-        false,
-        false
-      ]
-    }
-  ],
   "steps": [
     {
       "num": "STEP 01",
@@ -111,6 +65,52 @@
       "last": true
     }
   ],
+  "tags": [
+    {
+      "ko": "접수 <b>진행중</b>",
+      "en": "<b>Open</b> for requests",
+      "live": true,
+      "pk": true
+    },
+    {
+      "ko": "Live2D <b>전문</b>",
+      "en": "Live2D <b>specialist</b>",
+      "pk": true
+    },
+    {
+      "ko": "작업기간 <b>30일</b>",
+      "en": "<b>~30 day</b> turnaround"
+    }
+  ],
+  "slots": [
+    {
+      "ko": "6,7월",
+      "en": "July",
+      "filled": [
+        true,
+        true,
+        true,
+        false
+      ]
+    },
+    {
+      "ko": "8월",
+      "en": "August",
+      "filled": [
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "ko": "9월",
+      "en": "September",
+      "filled": [
+        false,
+        false
+      ]
+    }
+  ],
   "sections": [
     {
       "id": "base",
@@ -127,16 +127,16 @@
           "ko": "전신 · 협업용",
           "en": "Full body · Collab",
           "p": 1050000,
-          "subKo": "\uD83C\uDF89 20만원 할인",
-          "subEn": "\uD83C\uDF89 ₩200,000 off"
+          "subKo": "🎉 20만원 할인",
+          "subEn": "🎉 ₩200,000 off"
         },
         {
           "id": "b2",
           "ko": "전신",
           "en": "Full body",
           "p": 1100000,
-          "subKo": "\uD83C\uDF89 20만원 할인",
-          "subEn": "\uD83C\uDF89 ₩200,000 off"
+          "subKo": "🎉 20만원 할인",
+          "subEn": "🎉 ₩200,000 off"
         },
         {
           "id": "b3",
@@ -167,32 +167,32 @@
           "ko": "리깅 + 전신 세트 (5만원 할인)",
           "en": "Hayena rigging + full body set",
           "p": 800000,
-          "subKo": "\uD83C\uDF89 5만원 할인",
-          "subEn": "\uD83C\uDF89 ₩50,000 off"
+          "subKo": "🎉 5만원 할인",
+          "subEn": "🎉 ₩50,000 off"
         },
         {
           "id": "r2",
           "ko": "리깅 + 전신 세트 (표정 리깅 무료+5만원 할인)",
           "en": "Momon rigging + full body set",
           "p": 900000,
-          "subKo": "\uD83C\uDF89 표정리깅 전부 무료",
-          "subEn": "\uD83C\uDF89 all expression rigging free"
+          "subKo": "🎉 표정리깅 전부 무료",
+          "subEn": "🎉 all expression rigging free"
         },
         {
           "id": "r3",
           "ko": "리깅 + 전신 세트 (5만원 할인)",
           "en": "Pini rigging + full body set",
           "p": 1300000,
-          "subKo": "\uD83C\uDF89 5만원 할인",
-          "subEn": "\uD83C\uDF89 ₩50,000 off"
+          "subKo": "🎉 5만원 할인",
+          "subEn": "🎉 ₩50,000 off"
         }
       ]
     },
     {
       "id": "expr",
-      "ko": "기본 제공 표정(기본 5개 무료)",
-      "en": "Free Expressions",
-      "koLabel": "기본 제공 표정(기본 5개 무료)",
+      "ko": "기본 제공 표정(5개 무료)",
+      "en": "Free Expressions(5 Free)",
+      "koLabel": "기본 제공 표정(5개 무료)",
       "tagKo": "무료",
       "tagEn": "Free",
       "tagCls": "free",
