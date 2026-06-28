@@ -835,44 +835,47 @@
         document.getElementById('accordList').innerHTML=h;
     }
 
-    /* ════════ portfolio ════════ */
+    /* ════════ file = portfolio + rigging ════════ */
     var imgs = [], lbIdx = 0;
-
-    function loadPortfolio() {
+    var videos = [];
+    function loadFile() {
         fetch("data/file.json")
-        .then(r => r.json())
-        .then(images => {
-            imgs = [];
-            images.portfolio.forEach(f => {
-                var url = 'https://raw.githubusercontent.com/'+GH.user+'/'+GH.repo+'/main/portfolio/'+f.file;
-                if(/\.(png|jpe?g|gif|webp)$/i.test(f.file)){
-                    imgs.push({src:url,cap:f.title.replace(/\.[^.]+$/,'')});
-                }
-                document.getElementById('portLoading').style.display='none';
-            });
-            if(!imgs.length){var e=document.getElementById('portEmpty');e.style.display='block';e.textContent=UI[lang].portEmpty;return;}
-            var g='';
-            imgs.forEach(function(im,i){g+='<div class="port-item" onclick="openLb('+i+')"><div class="port-placeholder"><img loading="lazy" src="'+im.src+'" alt="'+im.cap+'"></div><div class="cap">'+im.cap+'</div></div>';});
-            document.getElementById('portGrid').innerHTML=g;document.getElementById('portWrap').style.display='block';
-        })
-        .catch(function(){document.getElementById('portLoading').style.display='none';var e=document.getElementById('portEmpty');e.style.display='block';e.textContent=UI[lang].portErr;});
+            .then(r => r.json())
+            .then(data => {
+                imgs = [];
+                videos = [];
 
-        // fetch('https://api.github.com/repos/' + GH.user + '/' + GH.repo + '/contents/' + GH.folder)
-        //     .then(function (r) {
-        //         if (!r.ok) throw new Error(r.status);
-        //         return r.json();
-        //     })
-        //     .then(function (data) {
-        //         imgs = [];
-        //         (data || []).forEach(function(f){if(f.type==='file'&&/\.(png|jpe?g|gif|webp)$/i.test(f.name)){imgs.push({src:f.download_url,cap:f.name.replace(/\.[^.]+$/,'')});}});
-        //         document.getElementById('portLoading').style.display='none';
-        //         if(!imgs.length){var e=document.getElementById('portEmpty');e.style.display='block';e.textContent=UI[lang].portEmpty;return;}
-        //         var g='';
-        //         imgs.forEach(function(im,i){g+='<div class="port-item" onclick="openLb('+i+')"><div class="port-placeholder"><img loading="lazy" src="'+im.src+'" alt="'+im.cap+'"></div><div class="cap">'+im.cap+'</div></div>';});
-        //         document.getElementById('portGrid').innerHTML=g;document.getElementById('portWrap').style.display='block';
-        //     })
-        //     .catch(function(){document.getElementById('portLoading').style.display='none';var e=document.getElementById('portEmpty');e.style.display='block';e.textContent=UI[lang].portErr;});
+                data.portfolio.forEach(f => {
+                    var url = 'https://raw.githubusercontent.com/'+GH.user+'/'+GH.repo+'/main/portfolio/'+f.file;
+                    if(/\.(png|jpe?g|webp)$/i.test(f.file)){
+                        imgs.push({src:url,cap:f.title.replace(/\.[^.]+$/,'')});
+                    }
+                    document.getElementById('portLoading').style.display='none';
+                });
+                if(!imgs.length){var e=document.getElementById('portEmpty');e.style.display='block';e.textContent=UI[lang].portEmpty;return;}
+                var g='';
+                imgs.forEach(function(im,i){g+='<div class="port-item" onclick="openLb('+i+')"><div class="port-placeholder"><img loading="lazy" src="'+im.src+'" alt="'+im.cap+'"></div><div class="cap">'+im.cap+'</div></div>';});
+                document.getElementById('portGrid').innerHTML=g;document.getElementById('portWrap').style.display='block';
+
+                data.rigging.forEach(f => {
+                    var url = 'https://raw.githubusercontent.com/'+GH.user+'/'+GH.repo+'/main/rigging/'+f.file;
+                    if(/\.(mp4|gif)$/i.test(f.file)){
+                        videos.push({src:url,cap:f.title.replace(/\.[^.]+$/,'')});
+                    }
+                    document.getElementById('riggLoading').style.display='none';
+                    if(!videos.length){var e=document.getElementById('riggEmpty');e.style.display='block';e.textContent=UI[lang].portEmpty;return;}
+                    var g='';
+                    videos.forEach(function(im){g+='<div class="rigg-item"><video loading="lazy" src="'+im.src+'" alt="'+im.cap+'" controls width="300" height="200"></video></div>';});
+                    document.getElementById('riggGrid').innerHTML=g;document.getElementById('riggWrap').style.display='block';
+                });
+            })
+            .catch(function(){
+                document.getElementById('portLoading').style.display='none';var e=document.getElementById('portEmpty');e.style.display='block';e.textContent=UI[lang].portErr;
+                document.getElementById('riggLoading').style.display='none';var e=document.getElementById('riggEmpty');e.style.display='block';e.textContent=UI[lang].portErr;
+            });
     }
+
+    /* ════════ portfolio ════════ */
     /* iframe 임베드에서도 동작하는 인라인 뷰어 (position:fixed 미사용) */
     function openLb(i){
         if(!imgs.length)return; lbIdx=(i+imgs.length)%imgs.length; var im=imgs[lbIdx];
@@ -884,45 +887,6 @@
     }
     function closeLb(){document.getElementById('portViewer').classList.remove('open');}
     function lbNav(d){openLb(lbIdx+d);}
-
-    /* ════════ rigging ════════ */
-    var videos = [];
-
-    function loadRigging() {
-        fetch("data/file.json")
-        .then(r => r.json())
-        .then(images => {
-            videos = [];
-            images.rigging.forEach(f => {
-                var url = 'https://raw.githubusercontent.com/'+GH.user+'/'+GH.repo+'/main/rigging/'+f.file;
-                if(/\.(mp4)$/i.test(f.file)){
-                    videos.push({src:url,cap:f.title.replace(/\.[^.]+$/,'')});
-                }
-                document.getElementById('riggLoading').style.display='none';
-                if(!videos.length){var e=document.getElementById('riggEmpty');e.style.display='block';e.textContent=UI[lang].portEmpty;return;}
-                var g='';
-                videos.forEach(function(im){g+='<div class="rigg-item"><video loading="lazy" src="'+im.src+'" alt="'+im.cap+'" controls width="300" height="200"></video></div>';});
-                document.getElementById('riggGrid').innerHTML=g;document.getElementById('riggWrap').style.display='block';
-            });
-        })
-        .catch(function(){document.getElementById('riggLoading').style.display='none';var e=document.getElementById('riggEmpty');e.style.display='block';e.textContent=UI[lang].portErr;});
-
-        // fetch('https://api.github.com/repos/' + GH.user + '/' + GH.repo + '/contents/' + GH.rigging)
-        //     .then(function (r) {
-        //         if (!r.ok) throw new Error(r.status);
-        //         return r.json();
-        //     })
-        //     .then(function (data) {
-        //         videos = [];
-        //         (data || []).forEach(function(f){if(f.type==='file'&&/\.(mp4)$/i.test(f.name)){videos.push({src:f.download_url,cap:f.name.replace(/\.[^.]+$/,'')});}});
-        //         document.getElementById('riggLoading').style.display='none';
-        //         if(!videos.length){var e=document.getElementById('riggEmpty');e.style.display='block';e.textContent=UI[lang].portEmpty;return;}
-        //         var g='';
-        //         videos.forEach(function(im){g+='<div class="rigg-item"><video loading="lazy" src="'+im.src+'" alt="'+im.cap+'" controls width="300" height="200"></video></div>';});
-        //         document.getElementById('riggGrid').innerHTML=g;document.getElementById('riggWrap').style.display='block';
-        //     })
-        //     .catch(function(){document.getElementById('riggLoading').style.display='none';var e=document.getElementById('riggEmpty');e.style.display='block';e.textContent=UI[lang].portErr;});
-    }
 
     /* ════════ selection ════════ */
     function findItem(secId,itId){var s=DATA.sections.find(function(x){return x.id===secId;});return s.items.find(function(i){return i.id===itId;});}
@@ -1065,7 +1029,7 @@
             .then(function(r){return r.ok?r.json():null;})
             .then(function(j){applyData(j);})
             .catch(function(){})
-            .then(function(){ setLang('ko'); loadPortfolio(); loadRigging();});
+            .then(function(){ setLang('ko'); loadFile();});
     }
     init();
     document.addEventListener('keydown',function(e){if(e.key==='Escape')closeLb();});
