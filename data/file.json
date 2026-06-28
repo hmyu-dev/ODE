@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-28T04:22:51.216Z",
+  "updated": "2026-06-28T04:23:56.221Z",
   "categories": [
     {
       "id": "portfolio",
@@ -16,6 +16,12 @@
   ],
   "portfolio": [
     {
+      "file": "logo.png",
+      "title": "logo",
+      "title_en": "",
+      "tag": "Live2D"
+    },
+    {
       "file": "LILLET_BLANC.jpeg",
       "title": "LILLET_BLANC",
       "title_en": "",
@@ -24,12 +30,6 @@
     {
       "file": "ABSINTHE.jpeg",
       "title": "ABSINTHE",
-      "title_en": "",
-      "tag": "Live2D"
-    },
-    {
-      "file": "logo.png",
-      "title": "logo",
       "title_en": "",
       "tag": "Live2D"
     }
