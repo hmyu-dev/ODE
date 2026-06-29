@@ -225,7 +225,7 @@
         </div>
         <div class="ed-body">
             <div class="gh-grid">
-                <div><label class="fl">GitHub 사용자</label><input class="f" id="ghUser" placeholder="hmyu-dev"></div>
+                <div><label class="fl">GitHub 사용자</label><input class="f" id="ghUser" placeholder="DvpHm"></div>
                 <div><label class="fl">저장소</label><input class="f" id="ghRepo" placeholder="ODE"></div>
             </div>
             <label class="fl">토큰 (repo 권한)</label>
@@ -265,7 +265,7 @@
 
     /* ───── load ───── */
     function loadGhFields(){
-        document.getElementById('ghUser').value=localStorage.getItem('gh_user')||'hmyu-dev';
+        document.getElementById('ghUser').value=localStorage.getItem('gh_user')||'DvpHm';
         document.getElementById('ghRepo').value=localStorage.getItem('gh_repo')||'ODE';
         document.getElementById('ghToken').value=localStorage.getItem('gh_token')||'';
     }

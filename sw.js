@@ -36,7 +36,7 @@ self.addEventListener('activate', function(e) {
 self.addEventListener('fetch', function(e) {
   if (e.request.method !== 'GET') return;
   // 외부 리소스(CDN, GitHub API)는 그대로 네트워크로
-  if (!e.request.url.includes('hmyu-dev.github.io') && !e.request.url.includes('localhost')) return;
+  if (!e.request.url.includes('DvpHm.github.io') && !e.request.url.includes('localhost')) return;
   // 네트워크 우선: 항상 최신을 받아오고, 오프라인일 때만 캐시 사용
   e.respondWith(
     fetch(e.request).then(function(res) {

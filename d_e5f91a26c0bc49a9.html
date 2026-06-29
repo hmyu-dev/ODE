@@ -530,7 +530,7 @@
       </div>
       <div>
         <div class="field-label">GitHub Username</div>
-        <input class="field" id="ghUser" placeholder="hmyu-dev" value="hmyu-dev">
+        <input class="field" id="ghUser" placeholder="DvpHm" value="DvpHm">
       </div>
       <div>
         <div class="field-label">Repository</div>
@@ -1113,12 +1113,12 @@
   function _ghCfg(){ return {user:localStorage.getItem('gh_user')||'',repo:localStorage.getItem('gh_repo')||'',token:localStorage.getItem('gh_token')||''}; }
   function openGhModal(){
     var c=_ghCfg();
-    document.getElementById('ghUser').value=c.user||'hmyu-dev';
+    document.getElementById('ghUser').value=c.user||'DvpHm';
     document.getElementById('ghRepo').value=c.repo||'ODE';
     document.getElementById('ghToken').value=c.token||'';
     document.getElementById('ghStatus').className='gh-status';
     document.getElementById('ghModal').classList.add('open');
-    var u=document.getElementById('ghUser').value||'hmyu-dev';
+    var u=document.getElementById('ghUser').value||'DvpHm';
     var r=document.getElementById('ghRepo').value||'ODE';
     var urlEl=document.getElementById('ghDataUrl');
     if(urlEl){

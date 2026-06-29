@@ -1,6 +1,6 @@
-# ODE 사이트 구조 (hmyu-dev/ODE)
+# ODE 사이트 구조 (DvpHm/ODE)
 
-라이브: https://hmyu-dev.github.io/ODE/
+라이브: https://DvpHm.github.io/ODE/
 최종 정리: 2026-06-28
 
 전부 정적 파일(서버 0). 데이터는 localStorage + GitHub API 기반.

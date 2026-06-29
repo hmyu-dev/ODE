@@ -436,7 +436,7 @@ body{display:flex;flex-direction:column;}
       <option value="claude-haiku-4-5">Claude Haiku 4.5 — 가장 저렴 (1회 ~5원)</option>
     </select>
     <label>GitHub 사용자명</label>
-    <input id="setGhUser" placeholder="hmyu-dev">
+    <input id="setGhUser" placeholder="DvpHm">
     <label>GitHub 저장소</label>
     <input id="setGhRepo" placeholder="ODE">
     <label>GitHub 토큰</label>
@@ -1073,7 +1073,7 @@ document.getElementById('btnSettings').addEventListener('click',function(){
   document.getElementById('setClaudeKey').value=localStorage.getItem('ode_claude_key')||'';
   document.getElementById('setClaudeModel').value=localStorage.getItem('ode_claude_model')||'claude-opus-4-8';
   var g=ghCfg();
-  document.getElementById('setGhUser').value=g.user||'hmyu-dev';
+  document.getElementById('setGhUser').value=g.user||'DvpHm';
   document.getElementById('setGhRepo').value=g.repo||'ODE';
   document.getElementById('setGhToken').value=g.token||'';
   document.getElementById('setSyncStage').checked=localStorage.getItem('ode_sync_stage')!=='0';
