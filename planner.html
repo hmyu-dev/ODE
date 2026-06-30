@@ -59,7 +59,7 @@ body{display:flex;flex-direction:column;}
 .chip.dragging{opacity:.4;}
 .chip .dot{width:10px;height:10px;border-radius:50%;background:var(--c-dot,var(--Y));flex-shrink:0;}
 .chip .who{font-family:var(--mono);font-size:14px;color:var(--c-tx,var(--text2));flex-shrink:0;max-width:104px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.chip .txt{font-size:18px;color:var(--text);flex:1;line-height:1.4;word-break:break-word;}
+.chip .txt{font-size:13px;color:var(--text);flex:1;line-height:1.4;word-break:break-word;}
 .chip .del{margin-left:auto;color:var(--text3);font-size:19px;cursor:pointer;flex-shrink:0;width:26px;text-align:center;border-radius:6px;line-height:1.2;}
 .chip .del:hover{color:var(--red);background:rgba(248,113,113,.12);}
 
@@ -67,7 +67,7 @@ body{display:flex;flex-direction:column;}
 .composer{border-top:1px solid var(--border);padding:14px;display:flex;flex-direction:column;gap:10px;background:var(--panel2);flex-shrink:0;}
 .composer .row{display:flex;gap:8px;}
 .composer select,.composer input{
-  font-family:var(--kr);font-size:17px;color:var(--text);
+  font-family:var(--kr);font-size:14px;color:var(--text);
   background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:11px 13px;
 }
 .composer select{flex:1;cursor:pointer;}
@@ -75,7 +75,7 @@ body{display:flex;flex-direction:column;}
 .composer .addcli:hover{border-color:var(--Y);color:var(--Y);}
 .composer input.txt{flex:1;}
 .composer input.txt::placeholder{color:var(--text3);}
-.composer .mk{background:var(--Y);border:none;border-radius:10px;color:#0d1320;font-weight:700;font-size:17px;font-family:var(--cond);letter-spacing:.5px;padding:0 18px;cursor:pointer;transition:.15s;}
+.composer .mk{background:var(--Y);border:none;border-radius:10px;color:#0d1320;font-weight:700;font-size:13px;font-family:var(--cond);letter-spacing:.5px;padding:0 18px;cursor:pointer;transition:.15s;}
 .composer .mk:hover{filter:brightness(1.1);}
 
 /* ─── 우측: 캘린더 ─── */
@@ -119,7 +119,7 @@ body{display:flex;flex-direction:column;}
 .cchip{
   display:flex;align-items:center;gap:7px;padding:5px 8px;border-radius:8px;cursor:grab;
   border:1px solid var(--c-bd,var(--border));background:var(--c-bg,var(--panel2));flex-shrink:0;
-  font-size:16px;transition:.1s;
+  font-size:12px;transition:.1s;
 }
 .cchip:active{cursor:grabbing;}
 .cchip.dragging{opacity:.4;}
@@ -254,9 +254,9 @@ body{display:flex;flex-direction:column;}
   <span class="sub">할일 일정보드</span>
   <span class="spacer"></span>
   <span class="hint">칩을 날짜로 드래그 · 칩 클릭=완료 · ✕=삭제</span>
-  <button class="topbtn" id="btnOrder">🧾 주문 확정</button>
-  <button class="topbtn ai" id="btnAi">🤖 AI 추출</button>
-  <button class="topbtn" id="btnSync">☁ 동기화</button>
+<!--  <button class="topbtn" id="btnOrder">🧾 주문 확정</button>-->
+<!--  <button class="topbtn ai" id="btnAi">🤖 AI 추출</button>-->
+  <button class="topbtn" id="btnSync">☁ 저장</button>
   <button class="topbtn" id="btnSettings" title="설정">⚙</button>
 </div>
 
@@ -857,18 +857,18 @@ function renderCatalog(){
   });
   updateOrdTotal();
 }
-document.getElementById('btnOrder').addEventListener('click', async function(){
-  var sel=document.getElementById('ordClient');
-  sel.innerHTML='<option value="">(신청자 없음)</option>';
-  allClients().forEach(function(n){ var o=document.createElement('option'); o.value=n; o.textContent=n; sel.appendChild(o); });
-  var cur=document.getElementById('selClient').value; if(cur&&cur!=='__none__') sel.value=cur;
-  _ordSel={};
-  document.getElementById('ordAiStatus').className='mstatus';
-  document.getElementById('ordAiText').value='';
-  document.getElementById('ordCatalog').innerHTML='<div class="mstatus show load" style="margin-top:12px">카탈로그 불러오는 중…</div>';
-  openModal('orderModal');
-  await loadCatalog(); renderCatalog();
-});
+// document.getElementById('btnOrder').addEventListener('click', async function(){
+//   var sel=document.getElementById('ordClient');
+//   sel.innerHTML='<option value="">(신청자 없음)</option>';
+//   allClients().forEach(function(n){ var o=document.createElement('option'); o.value=n; o.textContent=n; sel.appendChild(o); });
+//   var cur=document.getElementById('selClient').value; if(cur&&cur!=='__none__') sel.value=cur;
+//   _ordSel={};
+//   document.getElementById('ordAiStatus').className='mstatus';
+//   document.getElementById('ordAiText').value='';
+//   document.getElementById('ordCatalog').innerHTML='<div class="mstatus show load" style="margin-top:12px">카탈로그 불러오는 중…</div>';
+//   openModal('orderModal');
+//   await loadCatalog(); renderCatalog();
+// });
 document.getElementById('ordClose').addEventListener('click',function(){ closeModal('orderModal'); });
 document.getElementById('ordAiBtn').addEventListener('click', async function(){
   var key=localStorage.getItem('ode_claude_key');
@@ -1233,23 +1233,23 @@ document.getElementById('syncRestore').addEventListener('click',async function()
 /* ════════ AI 할일 추출 (Claude API) ════════ */
 var _aiResult=[], _aiInventory={expressions:[],parts:[]}, _aiOrder=null;
 function aiStatus(cls,msg){ var el=document.getElementById('aiStatus'); el.className='mstatus show '+cls; el.textContent=msg; }
-document.getElementById('btnAi').addEventListener('click',function(){
-  if(!localStorage.getItem('ode_claude_key')){
-    toast('⚙️ 설정에서 Claude API 키를 먼저 입력해주세요');
-    document.getElementById('btnSettings').click(); return;
-  }
-  // 신청자 셀렉트 동기화
-  var sel=document.getElementById('aiClient');
-  sel.innerHTML='<option value="">(신청자 없음)</option>';
-  allClients().forEach(function(n){ var o=document.createElement('option'); o.value=n; o.textContent=n; sel.appendChild(o); });
-  var cur=document.getElementById('selClient').value;
-  if(cur && cur!=='__none__') sel.value=cur;
-  document.getElementById('aiStatus').className='mstatus';
-  document.getElementById('aiPreview').className='ai-preview';
-  document.getElementById('aiAdd').style.display='none';
-  _aiResult=[];
-  openModal('aiModal');
-});
+// document.getElementById('btnAi').addEventListener('click',function(){
+//   if(!localStorage.getItem('ode_claude_key')){
+//     toast('⚙️ 설정에서 Claude API 키를 먼저 입력해주세요');
+//     document.getElementById('btnSettings').click(); return;
+//   }
+//   // 신청자 셀렉트 동기화
+//   var sel=document.getElementById('aiClient');
+//   sel.innerHTML='<option value="">(신청자 없음)</option>';
+//   allClients().forEach(function(n){ var o=document.createElement('option'); o.value=n; o.textContent=n; sel.appendChild(o); });
+//   var cur=document.getElementById('selClient').value;
+//   if(cur && cur!=='__none__') sel.value=cur;
+//   document.getElementById('aiStatus').className='mstatus';
+//   document.getElementById('aiPreview').className='ai-preview';
+//   document.getElementById('aiAdd').style.display='none';
+//   _aiResult=[];
+//   openModal('aiModal');
+// });
 document.getElementById('aiClose').addEventListener('click',function(){ closeModal('aiModal'); });
 
 document.getElementById('aiRun').addEventListener('click',async function(){
