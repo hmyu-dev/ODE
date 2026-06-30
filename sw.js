@@ -4,8 +4,7 @@ const CACHE = 'ode-v1';
 const SHELL = [
   '/ODE/studio.html',
   '/ODE/d_e5f91a26c0bc49a9.html',
-  '/ODE/deadline.html',
-  '/ODE/practice.html',
+  '/ODE/planner.html',
   '/ODE/commission-editor.html',
   '/ODE/portfolio-manager.html',
   '/ODE/stats.html',

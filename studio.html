@@ -92,9 +92,9 @@ html,body{height:100%;overflow:hidden;background:var(--bg);}
 </div>
 
 <iframe id="panel-dashboard" class="panel active" src="d_e5f91a26c0bc49a9.html"></iframe>
-<iframe id="panel-today"     class="panel"        src="today.html"></iframe>
+<!--<iframe id="panel-today"     class="panel"        src="today.html"></iframe>-->
 <iframe id="panel-planner"   class="panel"        src="planner.html"></iframe>
-<iframe id="panel-practice"  class="panel"        src="practice.html"></iframe>
+<!--<iframe id="panel-practice"  class="panel"        src="practice.html"></iframe>-->
 <iframe id="panel-editor"    class="panel"        src="commission-editor.html"></iframe>
 <iframe id="panel-portfolio" class="panel"        src="portfolio-manager.html"></iframe>
 <iframe id="panel-stats"     class="panel"        src="stats.html"></iframe>
@@ -102,7 +102,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);}
 
 <script>
 function switchTab(id) {
-  var ids = ['dashboard', 'today', 'planner', 'practice', 'editor', 'portfolio', 'stats', 'quote'];
+  var ids = ['dashboard', 'planner', 'editor', 'portfolio', 'stats', 'quote'];
   document.querySelectorAll('.tab-btn').forEach(function(b, i) {
     b.classList.toggle('active', ids[i] === id);
   });
